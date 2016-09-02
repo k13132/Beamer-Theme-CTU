@@ -1,8 +1,12 @@
+% Originally created by Kenton Hamaluik
+% Forked from https://github.com/FuzzyWuzzie/Beamer-Theme-Execushares
+
 % the various libraries we will be using
 \usepackage{tikz}
 \usetikzlibrary{calc}
 \usepackage[none]{hyphenat}
 \usepackage{fontspec}
+\usepackage{graphicx}
 \defaultfontfeatures{Ligatures=TeX}
 
 \newif\ifbeamer@pixelitem
@@ -11,21 +15,24 @@
 \ProcessOptionsBeamer
 
 % define colours
-% taken from pickton on Adobe Kuler:
-% https://kuler.adobe.com/Some-Kind-Of-Execushares-color-theme-3837185/
-\definecolor{ExecusharesRed}{RGB}{230,37,52}
+% taken from CTU in Prague Graphic manual
+\definecolor{ExecusharesRed}{RGB}{197,0,0}
+\definecolor{ExecusharesOrange}{RGB}{248,163,13}
+\definecolor{ExecusharesPink}{RGB}{240,48,162}
+\definecolor{ExecusharesPurple}{RGB}{109,41,66}
+\definecolor{ExecusharesTurquoise}{RGB}{0,169,160}
+\definecolor{ExecusharesTurquoiseDark}{RGB}{59,92,102}
+\definecolor{ExecusharesBrick}{RGB}{234,76,36}
+\definecolor{ExecusharesGreen}{RGB}{148,172,42}
 \definecolor{ExecusharesBlack}{RGB}{43,40,40}
-\definecolor{ExecusharesBlue}{RGB}{22,190,207}
-\definecolor{ExecusharesWhite}{RGB}{255,255,243}
+\definecolor{ExecusharesBlue}{RGB}{0,122,194}
+\definecolor{ExecusharesWhite}{RGB}{255,255,255}
 \definecolor{ExecusharesGrey}{RGB}{107,110,108}
 
-% use Adobe's Source Pro fonts:
-% Source Serif Pro: https://github.com/adobe-fonts/source-serif-pro
-% Source Sans Pro: https://github.com/adobe-fonts/source-sans-pro
-% Source Code Pro: https://github.com/adobe-fonts/source-code-pro
-\setmainfont{Source Serif Pro}
-\setsansfont{Source Sans Pro}
-\setmonofont{Source Code Pro}
+% use Google Roboto font https://github.com/google/roboto/releases
+\setmainfont{Roboto}
+\setsansfont{Roboto}
+\setmonofont{Roboto}
 
 % To use with pdflatex,
 % comment the fontspec package at the top
@@ -34,9 +41,9 @@
 %\usepackage{sourcecodepro}
 
 % set colours
-\setbeamercolor{itemize item}{fg=ExecusharesBlue}
-\setbeamercolor{enumerate item}{fg=ExecusharesBlue}
-\setbeamercolor{alerted text}{fg=ExecusharesBlue}
+\setbeamercolor{itemize item}{fg=ExecusharesBrick}
+\setbeamercolor{enumerate item}{fg=ExecusharesBrick}
+\setbeamercolor{alerted text}{fg=ExecusharesBrick}
 \setbeamercolor{section in toc}{fg=ExecusharesBlack}
 
 % set fonts
@@ -48,9 +55,9 @@
 % make the itemize bullets pixelated >
 \setbeamertemplate{itemize item}{
 	\tikz{
-		\draw[fill=ExecusharesBlue,draw=none] (0, 0) rectangle(0.1, 0.1);
-		\draw[fill=ExecusharesBlue,draw=none] (0.1, 0.1) rectangle(0.2, 0.2);
-		\draw[fill=ExecusharesBlue,draw=none] (0, 0.2) rectangle(0.1, 0.3);
+		\draw[fill=ExecusharesBrick,draw=none] (0, 0) rectangle(0.1, 0.1);
+		\draw[fill=ExecusharesBrick,draw=none] (0.1, 0.1) rectangle(0.2, 0.2);
+		\draw[fill=ExecusharesBrick,draw=none] (0, 0.2) rectangle(0.1, 0.3);
 	}
 }
 % make the subitems also pixelated >, but a little smaller and red
@@ -85,6 +92,10 @@
 \setcounter{showSlideNumbers}{1}
 \newcounter{showSlideTotal}
 \setcounter{showSlideTotal}{1}
+\newcounter{showAuthors}
+\setcounter{showAuthors}{1}
+\newcounter{showTitle}
+\setcounter{showTitle}{1}
 
 % use \makeatletter for our progress bar definitions
 % progress bar idea from http://tex.stackexchange.com/a/59749/44221
@@ -128,34 +139,52 @@
 		\ifnum\thepage=1\relax
 			% the title page
 			% draw the fills
-			\fill[color=ExecusharesRed] (0, 4cm) rectangle(\slidewidth,\slideheight);
+			\fill[color=ExecusharesBlue] (0, 4cm) rectangle(\slidewidth,\slideheight);
+			
+			%Logo
+			\node[anchor=north east,inner sep=0.5cm] (logo) at (\slidewidth,\slideheight) {\includegraphics[width=.3\textwidth]{CVUTLogoWhiteEN.eps}};
 
 			% draw the actual text
-			\node[anchor=south,text width=\slidewidth-1cm,inner xsep=0.5cm] at (0.5\slidewidth,4cm) {\color{ExecusharesWhite}\Huge\textbf{\inserttitle}};
-			\node[anchor=north east,text width=\slidewidth-1cm,align=right] at (\slidewidth-0.4cm,4cm) {\color{ExecusharesBlack}\tiny\insertsubtitle};
-			\node[above] at(0.5\slidewidth,2.3cm) {\color{ExecusharesBlack}\tiny by};
-			\node at (0.5\slidewidth,2cm) {\color{ExecusharesBlack}\LARGE\insertauthor};
+			\node[anchor=south,align=left, text width=\slidewidth-1cm,inner sep=0.5cm] at (0.5\slidewidth,4cm) {\color{ExecusharesWhite}\huge\textbf{\inserttitle}};
+			\node[anchor=north east,text width=\slidewidth-1cm,align=right] at (\slidewidth-0.4cm,4cm) {\color{ExecusharesGrey}\tiny\insertsubtitle};
+			%\node[above] at(0.5\slidewidth,3cm) {\color{ExecusharesBlack}\tiny by};
+			\node at (0.5\slidewidth,2.5cm) {\color{ExecusharesBlack}\LARGE\insertauthor};
+			\node[anchor=north,align=center, text width=\slidewidth-1cm] at (0.5\slidewidth,2cm) {\color{ExecusharesGrey}\scriptsize\insertinstitute};
 
 			% add the date in the corner
 			\node[anchor=south east] at(\slidewidth,0cm) {\color{ExecusharesGrey}\tiny\insertdate};
 		\else
 			% NOT the title page
 			% title bar
-			\fill[color=ExecusharesRed] (0, \slideheight-1cm) rectangle(\slidewidth,\slideheight);
+			\fill[color=ExecusharesBlue] (0, \slideheight-1.2cm) rectangle(\slidewidth,\slideheight);
 
 			% swap the comment on these to add section titles to slide titles
 			%\node[anchor=north,text width=11.8cm,inner xsep=0.5cm,inner ysep=0.25cm] at (6.4cm,9.6cm) {\color{ExecusharesWhite}\Large\textbf{\insertsectionhead: \insertframetitle}};
-			\node[anchor=north,text width=\slidewidth-1cm,inner xsep=0.5cm,inner ysep=0.25cm] at (0.5\slidewidth,\slideheight) {\color{ExecusharesWhite}\huge\textbf{\insertframetitle}};
+			\node[anchor=north,text width=\slidewidth-1.2cm,inner xsep=0.5cm,inner ysep=0.3cm] at (0.5\slidewidth,\slideheight) {\color{ExecusharesWhite}\huge\textbf{\insertframetitle}};
+			%Logo
+			\node[anchor=north east,inner xsep=0.5cm,inner ysep=0.25cm] (logo) at (\slidewidth,\slideheight) {\includegraphics[width=.08\textwidth]{CVUTLogoWhite.eps}};
 			
 			% if we're showing a progress bar, show it
 			% (I disable the progress bar and slide numbers for the "Appendix" slides)
 			\ifnum \value{showProgressBar}>0\relax%
 				% the the progress bar icon in the middle of the screen
 				\draw[fill=ExecusharesGrey,draw=none] (0cm,0cm) rectangle(\slidewidth,0.25cm);
-				\draw[fill=ExecusharesRed,draw=none] (0cm,0cm) rectangle(\progressbar@tmpdim,0.25cm);
+				\draw[fill=ExecusharesGreen,draw=none] (0cm,0cm) rectangle(\progressbar@tmpdim,0.25cm);
 
 				% bottom information
-				\node[anchor=south west] at(0cm,0.25cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertsection};
+				\node[anchor=south east] at(\slidewidth,0.5cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertsection};
+
+				% authors
+				\ifnum \value{showAuthors}>0\relax%
+					% draw authors
+					\node[anchor=south west,align=left] at(0,0.5cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertauthor};
+				\fi
+				
+				%title in footer
+				\ifnum \value{showTitle}>0\relax%
+					\node[anchor=south west,align=left] at(0,0.25cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\inserttitle};
+				\fi
+				
 				% if slide numbers are active
 				\ifnum \value{showSlideNumbers}>0\relax%
 					% if slide totals are active
@@ -171,6 +200,18 @@
 			\else
 				% section title in the bottom left
 				\node[anchor=south west] at(0cm,0cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertsection};
+				
+				% authors
+				\ifnum \value{showAuthors}>0\relax%
+					% draw authors
+					\node[anchor=south,align=center,text width=\slidewidth-1cm,] at(0.5\slidewidth,0.25cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\insertauthor};
+				\fi
+				
+				%title in footer
+				\ifnum \value{showTitle}>0\relax%
+					\node[anchor=south west,align=left] at(0,0.25cm) {\color{ExecusharesGrey}\tiny\vphantom{lp}\inserttitle};
+				\fi
+				
 				% if we're showing slide numbers
 				\ifnum \value{showSlideNumbers}>0\relax%
 					% if slide totals are active
@@ -197,7 +238,7 @@
 		\useasboundingbox (0,0) rectangle(\slidewidth,\slideheight);
 		%\fill[color=ExecusharesWhite] (0,0) rectangle(\the\paperwidth,\the\paperheight);
 		\fill[color=ExecusharesWhite] (-1cm, 2cm) rectangle (\slidewidth, \slideheight+0.1cm);
-		\fill[color=ExecusharesRed] (-1cm, 0.5\slideheight-1cm) rectangle(\slidewidth, 0.5\slideheight+1cm);
+		\fill[color=ExecusharesBlue] (-1cm, 0.5\slideheight-1cm) rectangle(\slidewidth, 0.5\slideheight+1cm);
 		\node[text width=\the\paperwidth-1cm,align=center] at (0.4\slidewidth, 0.5\slideheight) {\color{ExecusharesWhite}\Huge\textbf{\insertsection}};
 	\end{tikzpicture}
 }
